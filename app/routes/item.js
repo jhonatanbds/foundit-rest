@@ -19,7 +19,7 @@ module.exports = (app) => {
 
   app
     .route('/item/:id/commentary/:id')
-    .get(controller.getCommentary)
+    .get(controller.listCommentary)
     .put(controller.updateCommentary)
     .delete(controller.deleteCommentary);
 
