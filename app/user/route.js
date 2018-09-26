@@ -1,5 +1,6 @@
 module.exports = (app) => {
   const controller = app.user.controller;
+  const permission = app.utils.permission;
 
   app
     .route('/user')
@@ -9,8 +10,8 @@ module.exports = (app) => {
   app
     .route('/user/:id')
     .get(controller.get)
-    .put(controller.update)
-    .delete(controller.delete);
+    .put(permission.isLoggedIn, controller.update)
+    .delete(permission.isLoggedIn, controller.delete);
 
   app
     .route('/user/:id/item')

@@ -1,27 +1,28 @@
 module.exports = (app) => {
 
   const controller = app.item.controller;
+  const permission = app.utils.permission;
 
   app
     .route('/item')
-    .post(controller.add)
+    .post(permission.isLoggedIn, controller.add)
     .get(controller.list);
 
   app
     .route('/item/:id')
     .get(controller.get)
-    .put(controller.update)
-    .delete(controller.delete);
+    .put(permission.isLoggedIn, controller.update)
+    .delete(permission.isLoggedIn, controller.delete);
 
   app
     .route('/item/:id/commentary')
-    .post(controller.addCommentary)
+    .post(permission.isLoggedIn, controller.addCommentary)
     .get(controller.listCommentary);
 
   app
     .route('/item/:id/commentary/:id')
     .get(controller.listCommentary)
-    .put(controller.updateCommentary)
-    .delete(controller.deleteCommentary);
+    .put(permission.isLoggedIn, controller.updateCommentary)
+    .delete(permission.isLoggedIn, controller.deleteCommentary);
 
 };

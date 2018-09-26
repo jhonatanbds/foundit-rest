@@ -18,10 +18,6 @@ const UserSchema = mongoose.Schema({
     type: Date,
     required: true
   },
-  cnhExpiration: {
-    type: Date,
-    required: true
-  },
   email: {
     type: String,
     trim: true,

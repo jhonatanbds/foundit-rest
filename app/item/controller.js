@@ -1,10 +1,7 @@
 module.exports = (app) => {
-  const Item = app.item.model;
 
+  const itemService = app.item.service;
   const controller = {}
-
-  const ITEM_PROJECTION = 'foundDate foundBy foundPlace description';
-
 
   controller.list = (req, res) => {
     res.status(200).json([{
@@ -18,11 +15,9 @@ module.exports = (app) => {
 
   // Display detail page for a specific item on GET.
   controller.get = (req, res) => {
-    const _id = sanitize(req.params.id);
+    const id = sanitize(req.params.id);
     const owner = req.user._id;
-    Item.findOne({ _id, owner }, ITEM_PROJECTION)
-      .lean(true)
-      .exec()
+    itemService.getItem(id, owner)
       .then((item) => res.status(200).json(item))
       .catch((error) => {
         console.log('Error:', error);
@@ -50,7 +45,7 @@ module.exports = (app) => {
   // Display all commentaries for a specific item on GET.
   controller.getCommentary = (req, res) => { };
 
-  // Handle item create on POST.
+  // Handle commentary create on POST.
   controller.addCommentary = (req, res) => { };
 
   // Display commmentary update form on PUT.

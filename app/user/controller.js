@@ -41,9 +41,9 @@ module.exports = (app) => {
     let isValid = true;
     isValid = fullName && isValid ? fullName.length >= 5 : isValid && updating;
     isValid = birthDate && isValid
-        ? moment(birthDate).isValid() &&
-        moment().diff(moment(birthDate), 'years') >= 18
-        : isValid && updating;
+      ? moment(birthDate).isValid() &&
+      moment().diff(moment(birthDate), 'years') >= 18
+      : isValid && updating;
     isValid = email && isValid ? validator.isEmail(email) : isValid && updating;
     isValid = password && isValid ? password.trim().length >= 6 : isValid && updating;
     return isValid;
@@ -95,12 +95,11 @@ module.exports = (app) => {
    */
   controller.add = (req, res) => {
     const {
-      fullName, cnhExpiration, birthDate, email, password
+      fullName, birthDate, email, password
     } = req.body;
     if (
       !validateUser(false, {
         fullName,
-        cnhExpiration,
         birthDate,
         email,
         password
@@ -110,7 +109,6 @@ module.exports = (app) => {
     }
     const newUser = new User();
     newUser.fullName = fullName;
-    newUser.cnhExpiration = cnhExpiration;
     newUser.birthDate = birthDate;
     newUser.email = email;
     newUser.password = newUser.generateHash(password);
@@ -119,10 +117,10 @@ module.exports = (app) => {
         console.log(`error: ${error}`);
         const errorToReturn = {};
         if (error.code === 1100) {
-          errorToReturn.message = 'Já existe um usuário com esse email.';
+          errorToReturn.message = 'This email is already in use.';
         } else {
           errorToReturn.message =
-            'Não foi possível criar usuário. Consulte um desenvolvedor do app.';
+            'Not possible to register. Contact the developer.';
         }
         return res.status(500).json(errorToReturn);
       }
@@ -138,10 +136,9 @@ module.exports = (app) => {
    * @return {Object} user updated
    */
   controller.update = (req, res) => {
-    const { fullName, cnhExpiration, birthDate } = req.body;
+    const { fullName, birthDate } = req.body;
     const data = {};
     if (fullName) data.fullName = fullName;
-    if (cnhExpiration) data.cnhExpiration = cnhExpiration;
     if (birthDate) data.birthDate = birthDate;
 
     if (!validateUser(true, data)) {
@@ -162,7 +159,7 @@ module.exports = (app) => {
   };
 
   /**
-   * Delete user logged in and his cars
+   * Delete user logged in and his found items
    * @param {*} req
    * @param {*} res
    */
@@ -174,7 +171,7 @@ module.exports = (app) => {
         console.log(`error: ${error}`);
         return res.status(500).json(error);
       }
-      Car.deleteMany({ owner: _id })
+      Item.deleteMany({ owner: _id })
         .exec()
         .then(() => res.status(200).end())
         .catch((err) => {
@@ -183,6 +180,10 @@ module.exports = (app) => {
         });
     });
   };
+
+  controller.listItem = (req, res) => {
+
+  }
 
   /**
    * Change password of logged user

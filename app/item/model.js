@@ -18,6 +18,10 @@ const ItemSchema = mongoose.Schema({
   description: {
     type: String,
     required: true
+  },
+  found: {
+    type: Boolean,
+    require: true
   }
 });
 
