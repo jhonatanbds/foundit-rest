@@ -1,5 +1,6 @@
 module.exports = (app) => {
-  const controller = app.controllers.item;
+
+  const controller = app.item.controller;
 
   app
     .route('/item')

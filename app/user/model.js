@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt-nodejs');
 
+const Item = require('../item/model');
+
 const UserSchema = mongoose.Schema({
   createdAt: {
     type: Date,
@@ -13,6 +15,10 @@ const UserSchema = mongoose.Schema({
     required: true
   },
   birthDate: {
+    type: Date,
+    required: true
+  },
+  cnhExpiration: {
     type: Date,
     required: true
   },
@@ -31,6 +37,13 @@ const UserSchema = mongoose.Schema({
     type: String,
     trim: true
   }
+});
+
+// eslint-disable-next-line func-names
+UserSchema.post('remove', async function (next) {
+  const items = await Item.find({ foundBy: this._id });
+  items.forEach((item) => item.remove());
+  next();
 });
 
 /**
@@ -52,3 +65,5 @@ UserSchema.methods.generateHash = function (password) {
 UserSchema.methods.verifyPassword = function (password) {
   return bcrypt.compareSync(password, this.password);
 };
+
+module.exports = () => mongoose.model('User', UserSchema);

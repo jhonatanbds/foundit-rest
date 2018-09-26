@@ -6,9 +6,9 @@ const ItemSchema = mongoose.Schema({
     required: true,
     default: Date.now
   },
-  item: {
+  foundBy: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Item',
+    ref: 'User',
     required: true
   },
   foundPlace: {

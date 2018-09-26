@@ -1,9 +1,9 @@
 module.exports = (app) => {
-  const Item = app.models.item;
+  const Item = app.item.model;
 
   const controller = {}
 
-  const ITEM_PROJECTION = 'owner brand model year plate odometer';
+  const ITEM_PROJECTION = 'foundDate foundBy foundPlace description';
 
 
   controller.list = (req, res) => {
@@ -53,10 +53,10 @@ module.exports = (app) => {
   // Handle item create on POST.
   controller.addCommentary = (req, res) => { };
 
-  // Display item update form on PUT.
+  // Display commmentary update form on PUT.
   controller.updateCommentary = (req, res) => { };
 
-  // Handle item delete on DELETE.
+  // Handle commentary delete on DELETE.
   controller.deleteCommentary = (req, res) => { };
 
   return controller;
