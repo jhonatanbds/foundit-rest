@@ -21,7 +21,8 @@ const ItemSchema = mongoose.Schema({
   },
   found: {
     type: Boolean,
-    require: true
+    required: true,
+    default: false
   }
 });
 

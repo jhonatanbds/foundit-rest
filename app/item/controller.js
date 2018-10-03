@@ -1,23 +1,21 @@
 module.exports = (app) => {
 
-  const itemService = app.item.service;
-  const controller = {}
+  const service = app.item.service;
+  const controller = {};
 
   controller.list = (req, res) => {
-    res.status(200).json([{
-      nome: "casaco",
-      data: "ontem"
-    }, {
-      nome: "relogio",
-      data: "hoje"
-    }]);
+    service.getAllItems()
+      .then((items) => res.status(200).json(items))
+      .catch((error) => {
+        console.log('Error:', error);
+        return res.status(500).json(error);
+      });
   };
 
   // Display detail page for a specific item on GET.
   controller.get = (req, res) => {
     const id = sanitize(req.params.id);
-    const owner = req.user._id;
-    itemService.getItem(id, owner)
+    service.getItem(id)
       .then((item) => res.status(200).json(item))
       .catch((error) => {
         console.log('Error:', error);
@@ -26,7 +24,21 @@ module.exports = (app) => {
   };
 
   // Handle item create on POST.
-  controller.add = (req, res) => { };
+  controller.add = (req, res) => {
+    const foundBy = req.user._id;
+    const {
+      foundDate, foundPlace, description, found
+    } = req.body;
+    if (!service.validateItem(false, { foundDate, foundBy, foundPlace, description, found })) {
+      return res.status(500).json(new Error('Invalid item.'));
+    }
+    service.addItem(owner, { foundDate, foundBy, foundPlace, description, found })
+      .then((item) => res.status(200).json(item))
+      .catch((error) => {
+        console.log('Error:', error);
+        return res.status(500).json(error);
+      });
+   };
 
   // Display item update form on PUT.
   controller.update = (req, res) => { };
