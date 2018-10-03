@@ -6,7 +6,8 @@
   "scripts": {
     "lint": "eslint .",
     "dev": "nodemon index.js --exec \"npm run lint && node\"",
-    "start": "node index.js"
+    "start": "node index.js",
+    "test": "jest --runInBand"
   },
   "author": "jhonatanbds",
   "license": "ISC",
@@ -17,6 +18,7 @@
     "express": "^4.16.3",
     "express-load": "^1.1.16",
     "helmet": "^3.13.0",
+    "jest": "^23.6.0",
     "moment": "^2.22.2",
     "mongoose": "^5.3.1",
     "morgan": "^1.9.0",
@@ -28,6 +30,11 @@
   "devDependencies": {
     "nodemon": "^1.18.4",
     "supertest": "^3.3.0"
+  },
+  "jest": {
+    "globals": {
+      "NODE_ENV": "test"
+    }
   },
   "nodemonConfig": {
     "env": {

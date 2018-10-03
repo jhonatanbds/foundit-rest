@@ -2,8 +2,10 @@ const validator = require('validator');
 const moment = require('moment');
 
 module.exports = (app) => {
-  const User = app.user.model;
-  const Item = app.item.model;
+  const User = require('../user/model')(app);
+  const Item = require('../item/model');
+
+  console.log(User);
 
   const controller = {};
 
@@ -97,16 +99,18 @@ module.exports = (app) => {
     const {
       fullName, birthDate, email, password
     } = req.body;
-    if (
-      !validateUser(false, {
-        fullName,
-        birthDate,
-        email,
-        password
-      })
-    ) {
-      return res.status(500).json(new Error('User invalid'));
-    }
+    // if (
+    //   !validateUser(false, {
+    //     fullName,
+    //     birthDate,
+    //     email,
+    //     password
+    //   })
+    // ) {
+    //   return res.status(500).json(new Error('User invalid'));
+    // }
+    
+    console.log(req.body);
     const newUser = new User();
     newUser.fullName = fullName;
     newUser.birthDate = birthDate;

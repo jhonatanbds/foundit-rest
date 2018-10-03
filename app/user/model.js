@@ -2,8 +2,9 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt-nodejs');
 
 const Item = require('../item/model');
+const schema = mongoose.Schema;
 
-const UserSchema = mongoose.Schema({
+const UserSchema = new schema({
   createdAt: {
     type: Date,
     required: true,
@@ -15,8 +16,7 @@ const UserSchema = mongoose.Schema({
     required: true
   },
   birthDate: {
-    type: Date,
-    required: true
+    type: Date
   },
   email: {
     type: String,
