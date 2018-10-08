@@ -1,5 +1,5 @@
 module.exports = (app) => {
-  const controller = app.user.controller;
+  const controller = app.controllers.user;
   const permission = app.utils.permission;
 
   app

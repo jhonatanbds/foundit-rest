@@ -13,10 +13,10 @@ module.exports = () => {
 
   app.use(helmet());
 
-  load('utils', { cwd: 'app' })
-    .then('item')
-    .then('user')
-    .then('auth')
+  load('models', { cwd: 'app' })
+    .then('utils')
+    .then('controllers')
+    .then('routes')
     .into(app);
 
   return app;

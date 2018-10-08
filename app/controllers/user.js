@@ -2,10 +2,8 @@ const validator = require('validator');
 const moment = require('moment');
 
 module.exports = (app) => {
-  const User = require('../user/model')(app);
-  const Item = require('../item/model');
-
-  console.log(User);
+  const User = app.models.user;
+  const Item = app.models.item;
 
   const controller = {};
 

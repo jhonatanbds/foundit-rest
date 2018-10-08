@@ -1,6 +1,6 @@
 module.exports = (app) => {
 
-  const controller = app.item.controller;
+  const controller = app.controllers.item;
   const permission = app.utils.permission;
 
   app

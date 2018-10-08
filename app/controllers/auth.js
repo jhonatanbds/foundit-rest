@@ -1,7 +1,7 @@
 const uuid = require('uuid');
 
 module.exports = (app) => {
-  const User = app.user.model;
+  const User = app.models.user;
 
   const controller = {};
 
@@ -18,7 +18,6 @@ module.exports = (app) => {
         if (!user) {
           return res.status(400).end();
         }
-
         if (!user.verifyPassword(req.body.password)) {
           return res.status(400).end();
         }

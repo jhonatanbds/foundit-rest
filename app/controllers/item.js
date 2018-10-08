@@ -1,10 +1,28 @@
+const validator = require('validator');
+
 module.exports = (app) => {
 
-  const service = app.item.service;
+  const Item = app.models.item;
+
+  const ITEM_PROJECTION = 'foundDate foundBy foundPlace description found';
   const controller = {};
 
+  const validateItem = (updating, {
+    foundDate, foundBy, foundPlace, description, found
+  }) => {
+    let isValid = true;
+    isValid =
+      foundPlace && isValid ? !validator.isEmpty(foundPlace.trim()) : isValid && updating;
+    isValid =
+      description && isValid ? !validator.isEmpty(description.trim()) : isValid && updating;
+    return isValid;
+  };
+
   controller.list = (req, res) => {
-    service.getAllItems()
+    Item.find({}, ITEM_PROJECTION)
+      .sort({ foundDate: 1 })
+      .lean(true)
+      .exec()
       .then((items) => res.status(200).json(items))
       .catch((error) => {
         console.log('Error:', error);
@@ -15,7 +33,9 @@ module.exports = (app) => {
   // Display detail page for a specific item on GET.
   controller.get = (req, res) => {
     const id = sanitize(req.params.id);
-    service.getItem(id)
+    Item.findOne({ id }, ITEM_PROJECTION)
+      .lean(true)
+      .exec()
       .then((item) => res.status(200).json(item))
       .catch((error) => {
         console.log('Error:', error);
@@ -25,15 +45,23 @@ module.exports = (app) => {
 
   // Handle item create on POST.
   controller.add = (req, res) => {
-    const foundBy = req.user._id;
     const {
-      foundDate, foundPlace, description, found
+      foundDate, foundBy, foundPlace, description, found
     } = req.body;
-    if (!service.validateItem(false, { foundDate, foundBy, foundPlace, description, found })) {
-      return res.status(500).json(new Error('Invalid item.'));
-    }
-    service.addItem(owner, { foundDate, foundBy, foundPlace, description, found })
-      .then((item) => res.status(200).json(item))
+    // if (validateItem(false, { foundDate, foundBy, foundPlace, description, found })) {
+    //   return res.status(505).json(new Error('Invalid item.'));
+    // }
+    const newItem = new Item({
+      foundDate,
+      foundBy,
+      foundPlace,
+      description,
+      found
+    });
+    
+    newItem
+      .save()
+      .then(async (item) => res.status(200).json(item))
       .catch((error) => {
         console.log('Error:', error);
         return res.status(500).json(error);

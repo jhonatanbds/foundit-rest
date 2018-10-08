@@ -5,7 +5,9 @@ const app = require('../config/express')();
 const passport = require('../config/passport');
 const mongo = require('../config/database');
 
-const User = app.user.model;
+const {
+  models: { user: User }
+} = app;
 
 describe('auth', () => {
   let token;
