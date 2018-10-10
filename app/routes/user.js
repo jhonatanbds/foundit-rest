@@ -5,13 +5,13 @@ module.exports = (app) => {
   app
     .route('/user')
     .post(controller.add)
-    .get(controller.list);
+    .get(controller.list)
+    .put(permission.isLoggedIn, controller.update)
+    .delete(permission.isLoggedIn, controller.delete);
 
   app
     .route('/user/:id')
-    .get(controller.get)
-    .put(permission.isLoggedIn, controller.update)
-    .delete(permission.isLoggedIn, controller.delete);
+    .get(controller.get);    
 
   app
     .route('/user/:id/item')

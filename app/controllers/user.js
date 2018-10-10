@@ -42,7 +42,7 @@ module.exports = (app) => {
     isValid = fullName && isValid ? fullName.length >= 5 : isValid && updating;
     isValid = birthDate && isValid
       ? moment(birthDate).isValid() &&
-      moment().diff(moment(birthDate), 'years') >= 18
+      moment().diff(moment(birthDate), 'years') >= 1
       : isValid && updating;
     isValid = email && isValid ? validator.isEmail(email) : isValid && updating;
     isValid = password && isValid ? password.trim().length >= 6 : isValid && updating;
@@ -97,16 +97,16 @@ module.exports = (app) => {
     const {
       fullName, birthDate, email, password
     } = req.body;
-    // if (
-    //   !validateUser(false, {
-    //     fullName,
-    //     birthDate,
-    //     email,
-    //     password
-    //   })
-    // ) {
-    //   return res.status(500).json(new Error('User invalid'));
-    // }
+    if (
+      !validateUser(false, {
+        fullName,
+        birthDate,
+        email,
+        password
+      })
+    ) {
+      return res.status(500).json(new Error('User invalid'));
+    }
     
     console.log(req.body);
     const newUser = new User();
