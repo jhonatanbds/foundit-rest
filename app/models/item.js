@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const ItemSchema = mongoose.Schema({
+  title: {
+    type: String,
+    required: true
+  },
   foundDate: {
     type: Date,
     required: true,
@@ -8,8 +12,7 @@ const ItemSchema = mongoose.Schema({
   },
   foundBy: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
+    ref: 'User'
   },
   foundPlace: {
     type: String,
@@ -21,7 +24,7 @@ const ItemSchema = mongoose.Schema({
   },
   found: {
     type: Boolean,
-    required: true,
+    required: false,
     default: false
   },
   comments: [

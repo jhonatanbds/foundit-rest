@@ -107,8 +107,7 @@ module.exports = (app) => {
     ) {
       return res.status(500).json(new Error('User invalid'));
     }
-    
-    console.log(req.body);
+  
     const newUser = new User();
     newUser.fullName = fullName;
     newUser.birthDate = birthDate;

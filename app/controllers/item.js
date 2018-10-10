@@ -47,12 +47,13 @@ module.exports = (app) => {
   // Handle item create on POST.
   controller.add = (req, res) => {
     const {
-      foundDate, foundBy, foundPlace, description, found
+      title, foundDate, foundBy, foundPlace, description, found
     } = req.body;
     // if (validateItem(false, { foundDate, foundBy, foundPlace, description, found })) {
     //   return res.status(505).json(new Error('Invalid item.'));
     // }
     const newItem = new Item({
+      title,
       foundDate,
       foundBy,
       foundPlace,

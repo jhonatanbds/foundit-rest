@@ -36,7 +36,7 @@ const UserSchema = new schema({
 });
 
 // eslint-disable-next-line func-names
-UserSchema.post('remove', async function (next) {
+UserSchema.post('remove', async (next) => {
   const items = await Item.find({ foundBy: this._id });
   items.forEach((item) => item.remove());
   next();
