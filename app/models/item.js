@@ -23,7 +23,21 @@ const ItemSchema = mongoose.Schema({
     type: Boolean,
     required: true,
     default: false
-  }
+  },
+  comments: [
+    {
+      author: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'User'
+      },
+      content: String
+    }
+  ]
 });
+
+ItemSchema.methods.comment = function(c) {
+  this.comments.push(c)
+  return this.save()
+}
 
 module.exports = () => mongoose.model('Item', ItemSchema);

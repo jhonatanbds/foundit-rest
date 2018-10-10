@@ -16,13 +16,6 @@ module.exports = (app) => {
 
   app
     .route('/item/:id/commentary')
-    .post(permission.isLoggedIn, controller.addCommentary)
-    .get(controller.listCommentary);
-
-  app
-    .route('/item/:id/commentary/:id')
-    .get(controller.listCommentary)
-    .put(permission.isLoggedIn, controller.updateCommentary)
-    .delete(permission.isLoggedIn, controller.deleteCommentary);
+    .post(permission.isLoggedIn, controller.addCommentary);
 
 };

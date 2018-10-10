@@ -1,4 +1,5 @@
 const validator = require('validator');
+const sanitize = require('mongo-sanitize');
 
 module.exports = (app) => {
 
@@ -69,30 +70,61 @@ module.exports = (app) => {
    };
 
   // Display item update form on PUT.
-  controller.update = (req, res) => { };
+  controller.update = (req, res) => {
+    const data = {};
+    if (req.body.foundDate) data.foundDate = req.body.foundDate;
+    if (req.body.foundBy) data.foundBy = req.body.foundBy;
+    if (req.body.foundPlace) data.foundPlace = req.body.foundPlace;
+    if (req.body.description) data.description = req.body.description;
+    if (req.body.found) data.found = req.body.found;
 
-  // Handle item delete on DELETE.
-  controller.delete = (req, res) => { };
+    const _id = sanitize(req.params.id);
 
-  controller.listCommentary = (req, res) => {
-    res.status(200).json([{
-      text: "muito bonito esse item rs!"
-    }, {
-      text: "comprei um igual ontem"
-    }]);
+    Item.findOneAndUpdate({ _id }, data, { new: true })
+      .lean(true)
+      .exec()
+      .then(async (car) => res.status(200).json(car))
+      .catch((error) => {
+        console.log('Error:', error);
+        return res.status(500).json(error);
+      });
   };
 
-  // Display all commentaries for a specific item on GET.
-  controller.getCommentary = (req, res) => { };
+  // Handle item delete on DELETE.
+  controller.delete = (req, res) => {
+    const _id = sanitize(req.params.id);
+    Item.findOneAndDelete({ _id })
+      .exec()
+      .then(() => res.status(200).end())
+      .catch((error) => {
+        console.log('Error:', error);
+        return res.status(500).json(error);
+      });
+  };
 
   // Handle commentary create on POST.
-  controller.addCommentary = (req, res) => { };
+  controller.addCommentary = (req, res) => {
+    const _id = sanitize(req.params.id);
+    Item.findById({ _id })
+    .then((item) => item.comment({
+      author: req.body.author_id,
+      text: req.body.comment
+    }))
+    .then(() => res.status(200).json(car))
+    .catch((error) => {
+      console.log('Error:', error);
+      return res.status(500).json(error);
+    });
+  };
 
-  // Display commmentary update form on PUT.
-  controller.updateCommentary = (req, res) => { };
+  // // Display all commentaries for a specific item on GET.
+  // controller.getCommentary = (req, res) => { };
 
-  // Handle commentary delete on DELETE.
-  controller.deleteCommentary = (req, res) => { };
+  // // Display commmentary update form on PUT.
+  // controller.updateCommentary = (req, res) => { };
+
+  // // Handle commentary delete on DELETE.
+  // controller.deleteCommentary = (req, res) => { };
 
   return controller;
 
