@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 module.exports = (uri) => {
-  const myDB = mongoose.connect(uri);
+  const myDB = mongoose.connect(uri, { useNewUrlParser: true });
   
   const admin = async () => {
     const User = mongoose.model('User');
